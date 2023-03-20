@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -14,7 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import java.sql.*;
+
 import database.DBConnection;
 
 public class Login extends JFrame implements ActionListener {
@@ -23,16 +24,6 @@ public class Login extends JFrame implements ActionListener {
 	private JTextField username;
 	private JTextField password;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		new Login();
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public Login() {
 		this.setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -96,6 +87,7 @@ public class Login extends JFrame implements ActionListener {
 			ResultSet resSet=c.getStatement().executeQuery(query);
 			if(resSet.next()) {
 				this.setVisible(false);
+				new MainWindow();
 				
 			}else {
 				JOptionPane.showMessageDialog(null, "Invalid username or password!");
