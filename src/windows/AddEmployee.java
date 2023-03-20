@@ -7,16 +7,18 @@ import java.awt.event.ActionListener;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
+
+import database.DBConnection;
 
 public class AddEmployee extends JFrame implements ActionListener {
 
@@ -219,14 +221,14 @@ public class AddEmployee extends JFrame implements ActionListener {
 
 		level = new JComboBox();
 		level.setModel(new DefaultComboBoxModel(
-				new String[] { "Entry-level", "Intermediate", "Mid-level", "Senior or executive-level" }));
+				new String[] { "-", "Entry-level", "Intermediate", "Mid-level", "Senior or executive-level" }));
 		level.setBounds(546, 317, 169, 21);
 		contentPane.add(level);
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == addBtn) {
-			String nname, ffname, bbirthDate, ddesignation, ccity, ccountry, eemail, iid, ssalary, aadress, llevel;
+			String nname, ffname, bbirthDate, ddesignation, ccity, ccountry, eemail, iid, ssalary, aadress, llevel,phone;
 			nname = name.getText();
 			ffname = fname.getText();
 			bbirthDate = birthDate.getText();
@@ -239,13 +241,24 @@ public class AddEmployee extends JFrame implements ActionListener {
 			aadress = adress.getText();
 			iid = id.getText();
 			llevel = level.getSelectedItem().toString();
+			phone=phoneNumber.getText();
 
 			String emailRegex = "";
 			Pattern p = Pattern.compile(emailRegex);
 			Matcher m = p.matcher(eemail);
 			
-			
-			
+			try {
+				DBConnection c=new DBConnection();
+				String query="insert into employee values('"+nname+"', '"+ffname+"', '"+bbirthDate+"', '"+ccity+"', '"+ccountry+"' , '"+eemail+"', '"+phone+"', '"
+				+aadress+"', '"+ssalary+"', '"+ddesignation+"', '"+llevel+"');";
+				
+				System.out.println(query);
+				c.getStatement().executeUpdate(query);
+				
+				JOptionPane.showMessageDialog(null, "Added Succesfully!");
+			}catch(Exception ex) {
+				ex.printStackTrace();
+			}
 			
 
 		} else if (e.getSource() == backBtn) {
