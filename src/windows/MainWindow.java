@@ -46,18 +46,8 @@ public class MainWindow extends JFrame implements ActionListener{
 		background.add(addBtn);
 		addBtn.addActionListener(this);
 
-		removeBtn = new JButton("Remove Employee");
-		removeBtn.setBounds(100, 200, 200, 60);
-		background.add(removeBtn);
-		removeBtn.addActionListener(this);
-		
-		updateBtn = new JButton("Update Employee");
-		updateBtn.setBounds(100, 300, 200, 60);
-		background.add(updateBtn);
-		updateBtn.addActionListener(this);
-		
 		viewBtn = new JButton("View Employees");
-		viewBtn.setBounds(100, 400, 200, 60);
+		viewBtn.setBounds(100, 200, 200, 60);
 		background.add(viewBtn);
 		viewBtn.addActionListener(this);
 		

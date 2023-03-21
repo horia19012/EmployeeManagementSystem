@@ -19,4 +19,7 @@ public class DBConnection {
 	public Statement getStatement() {
 		return this.statement;
 	}
+	public Connection getConnection() {
+		return this.con;
+	}
 }

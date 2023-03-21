@@ -5,7 +5,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.Random;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,7 +23,7 @@ import javax.swing.border.EmptyBorder;
 
 import database.DBConnection;
 
-public class AddEmployee extends JFrame implements ActionListener {
+public class UpdateEmployee extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JTextField fname;
@@ -44,15 +45,13 @@ public class AddEmployee extends JFrame implements ActionListener {
 	private JLabel lblSalary;
 	private JLabel birthLabel;
 	private JTextField birthDate;
-	private JButton addBtn;
+	private JButton update;
 	private JTextField coutry;
 	private JButton backBtn;
 	private JLabel idLabel;
 	private JLabel id;
 	private JLabel experienceLabel;
 	private JComboBox level;
-	private Random rand=new Random();
-	private int nbInt=rand.nextInt(99999);
 
 	/**
 	 * Launch the application.
@@ -72,10 +71,12 @@ public class AddEmployee extends JFrame implements ActionListener {
 
 	/**
 	 * Create the frame.
+	 * 
+	 * @throws SQLException
 	 */
-	public AddEmployee() {
+	public UpdateEmployee(String toUpdateID) throws Exception {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 918, 528);
+		setBounds(100, 100, 1000, 528);
 		this.setVisible(true);
 
 		contentPane = new JPanel();
@@ -84,7 +85,7 @@ public class AddEmployee extends JFrame implements ActionListener {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JLabel topLabel = new JLabel("Add Employee");
+		JLabel topLabel = new JLabel("Enter details");
 		topLabel.setBounds(390, 10, 165, 52);
 		topLabel.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 21));
 		contentPane.add(topLabel);
@@ -186,11 +187,11 @@ public class AddEmployee extends JFrame implements ActionListener {
 		contentPane.add(birthDate);
 		birthDate.setColumns(10);
 
-		addBtn = new JButton("Add");
-		addBtn.setBounds(465, 388, 183, 52);
-		addBtn.addActionListener(this);
+		update = new JButton("Update");
+		update.setBounds(465, 388, 183, 52);
+		update.addActionListener(this);
 
-		contentPane.add(addBtn);
+		contentPane.add(update);
 
 		backBtn = new JButton("Back");
 		backBtn.setBounds(265, 388, 157, 52);
@@ -212,7 +213,7 @@ public class AddEmployee extends JFrame implements ActionListener {
 		idLabel.setBounds(148, 357, 45, 28);
 		contentPane.add(idLabel);
 
-		id = new JLabel(String.valueOf(nbInt));
+		id = new JLabel(toUpdateID);
 		id.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		id.setBounds(195, 367, 140, 13);
 		contentPane.add(id);
@@ -228,11 +229,36 @@ public class AddEmployee extends JFrame implements ActionListener {
 				new String[] { "-", "Entry-level", "Intermediate", "Mid-level", "Senior or executive-level" }));
 		level.setBounds(546, 317, 169, 21);
 		contentPane.add(level);
+		
+		JLabel simpleLabel=new JLabel("Set Level Again!");
+		simpleLabel.setBounds(750, 275, 100, 100);
+		contentPane.add(simpleLabel);
+		
+		try {
+			String query = "select * from employee where id= '" + toUpdateID + "'";
+			DBConnection c = new DBConnection();
+			ResultSet res = c.getStatement().executeQuery(query);
+			while (res.next()) {
+				name.setText(res.getString("name"));
+				fname.setText(res.getString("fname"));
+				email.setText(res.getString("email"));
+				phoneNumber.setText(res.getString("phone"));
+				birthDate.setText(res.getString("birthdate"));
+				city.setText(res.getString("city"));
+				country.setText(res.getString("country"));
+				salary.setText(res.getString("salary"));
+				designation.setText(res.getString("designation"));
+				adress.setText(res.getString("adress"));
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == addBtn) {
-			String nname, ffname, bbirthDate, ddesignation, ccity, ccountry, eemail, iid, ssalary, aadress, llevel,phone;
+		if (e.getSource() == update) {
+			String nname, ffname, bbirthDate, ddesignation, ccity, ccountry, eemail, iid, ssalary, aadress, llevel,
+					phone;
 			nname = name.getText();
 			ffname = fname.getText();
 			bbirthDate = birthDate.getText();
@@ -244,36 +270,26 @@ public class AddEmployee extends JFrame implements ActionListener {
 			aadress = adress.getText();
 			iid = id.getText();
 			llevel = level.getSelectedItem().toString();
-			phone=phoneNumber.getText();
+			phone = phoneNumber.getText();
 
 			String emailRegex = "";
 			Pattern p = Pattern.compile(emailRegex);
 			Matcher m = p.matcher(eemail);
-			
+
 			try {
-				if(nname.isEmpty() || ffname.isEmpty() || bbirthDate.isEmpty() || ddesignation.isEmpty() ||
-						ccity.isEmpty() ||ccountry.isEmpty() || eemail.isEmpty() || ssalary.isEmpty() || aadress.isEmpty() ||
-						llevel.isEmpty() || phone.isEmpty()) {
-					throw new IOException();
-				}
-						
-				DBConnection c=new DBConnection();
-				String query="insert into employee values('"+nname+"', '"+ffname+"', '"+bbirthDate+"', '"+ccity+"', '"+ccountry+"' , '"+eemail+"', '"+phone+"', '"
-				+aadress+"', '"+ssalary+"', '"+ddesignation+"', '"+llevel+"', '"+iid+"');";
-				
+
+				DBConnection c = new DBConnection();
+				String query = "update employee set name='" + nname + "',fname= '" + ffname + "', birthdate='" + bbirthDate + "',city= '"
+						+ ccity + "',country= '" + ccountry + "' ,email= '" + eemail + "',phone= '" + phone + "',adress='" + aadress + "', salary='"
+						+ ssalary + "',designation= '" + ddesignation + "',level= '" + llevel + "'";
+
 				System.out.println(query);
 				c.getStatement().executeUpdate(query);
-				
-				JOptionPane.showMessageDialog(null, "Added Succesfully!");
-			}
-			catch(IOException ex) {
-				JOptionPane.showMessageDialog(null, "Please fill all fields!");
-			}
-			
-			catch(Exception ex) {
+
+				JOptionPane.showMessageDialog(null, "Updated Succesfully!");
+			}catch (Exception ex) {
 				ex.printStackTrace();
 			}
-			
 
 		} else if (e.getSource() == backBtn) {
 			this.dispose();
