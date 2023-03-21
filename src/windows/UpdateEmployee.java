@@ -279,10 +279,9 @@ public class UpdateEmployee extends JFrame implements ActionListener {
 			try {
 
 				DBConnection c = new DBConnection();
-				String query = "update employee set name='" + nname + "',fname= '" + ffname + "', birthdate='" + bbirthDate + "',city= '"
-						+ ccity + "',country= '" + ccountry + "' ,email= '" + eemail + "',phone= '" + phone + "',adress='" + aadress + "', salary='"
-						+ ssalary + "',designation= '" + ddesignation + "',level= '" + llevel + "'";
-
+				String query = "UPDATE employee SET name='" + nname + "', fname='" + ffname + "', birthdate='" + bbirthDate + "', city='" + ccity + "', country='" + ccountry + "', email='"
+				+ eemail + "', phone='" + phone + "', adress='" + aadress + "', salary='" + ssalary 
+				+"', designation='" + ddesignation + "', level='" + llevel + "' WHERE id='" + iid + "'";
 				System.out.println(query);
 				c.getStatement().executeUpdate(query);
 

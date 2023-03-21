@@ -49,20 +49,20 @@ public class EmployeeWindow extends JFrame implements ActionListener {
 		remove.addActionListener(this);
 		this.add(remove);
 
-		back = new JButton("Back");
-		back.setBounds(300, 70, 80, 20);
-		back.addActionListener(this);
-		this.add(back);
-
 		print = new JButton("Print");
-		print.setBounds(400, 70, 80, 20);
+		print.setBounds(300, 70, 80, 20);
 		print.addActionListener(this);
 		this.add(print);
 
 		update = new JButton("Update");
-		update.setBounds(500, 70, 80, 20);
+		update.setBounds(400, 70, 80, 20);
 		update.addActionListener(this);
 		this.add(update);
+		
+		back = new JButton("Back");
+		back.setBounds(1000, 70, 80, 20);
+		back.addActionListener(this);
+		this.add(back);
 
 		try {
 			DBConnection c = new DBConnection();
