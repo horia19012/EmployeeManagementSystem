@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,6 +51,8 @@ public class AddEmployee extends JFrame implements ActionListener {
 	private JLabel id;
 	private JLabel experienceLabel;
 	private JComboBox level;
+	private Random rand=new Random();
+	private int nbInt=rand.nextInt(99999);
 
 	/**
 	 * Launch the application.
@@ -208,9 +212,9 @@ public class AddEmployee extends JFrame implements ActionListener {
 		idLabel.setBounds(148, 357, 45, 28);
 		contentPane.add(idLabel);
 
-		id = new JLabel("\"\"");
+		id = new JLabel(String.valueOf(nbInt));
 		id.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		id.setBounds(195, 367, 45, 13);
+		id.setBounds(195, 367, 140, 13);
 		contentPane.add(id);
 
 		experienceLabel = new JLabel("Level of experience:");
@@ -236,7 +240,6 @@ public class AddEmployee extends JFrame implements ActionListener {
 			ccity = city.getText();
 			ccountry = country.getText();
 			eemail = email.getText();
-			iid = id.getText();
 			ssalary = salary.getText();
 			aadress = adress.getText();
 			iid = id.getText();
@@ -248,15 +251,26 @@ public class AddEmployee extends JFrame implements ActionListener {
 			Matcher m = p.matcher(eemail);
 			
 			try {
+				if(nname.isEmpty() || ffname.isEmpty() || bbirthDate.isEmpty() || ddesignation.isEmpty() ||
+						ccity.isEmpty() ||ccountry.isEmpty() || eemail.isEmpty() || ssalary.isEmpty() || aadress.isEmpty() ||
+						llevel.isEmpty() || phone.isEmpty()) {
+					throw new IOException();
+				}
+						
 				DBConnection c=new DBConnection();
 				String query="insert into employee values('"+nname+"', '"+ffname+"', '"+bbirthDate+"', '"+ccity+"', '"+ccountry+"' , '"+eemail+"', '"+phone+"', '"
-				+aadress+"', '"+ssalary+"', '"+ddesignation+"', '"+llevel+"');";
+				+aadress+"', '"+ssalary+"', '"+ddesignation+"', '"+llevel+"', '"+iid+"');";
 				
 				System.out.println(query);
 				c.getStatement().executeUpdate(query);
 				
 				JOptionPane.showMessageDialog(null, "Added Succesfully!");
-			}catch(Exception ex) {
+			}
+			catch(IOException ex) {
+				JOptionPane.showMessageDialog(null, "Please fill all fields!");
+			}
+			
+			catch(Exception ex) {
 				ex.printStackTrace();
 			}
 			
@@ -267,4 +281,9 @@ public class AddEmployee extends JFrame implements ActionListener {
 			m.setVisible(true);
 		}
 	}
+//	public boolean isEmpty(String s)  {
+//		if(s.equals("")==true) {
+//			return true
+//		}
+//	}
 }

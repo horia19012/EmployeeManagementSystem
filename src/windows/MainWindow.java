@@ -59,7 +59,7 @@ public class MainWindow extends JFrame implements ActionListener{
 		viewBtn = new JButton("View Employees");
 		viewBtn.setBounds(100, 400, 200, 60);
 		background.add(viewBtn);
-		updateBtn.addActionListener(this);
+		viewBtn.addActionListener(this);
 		
 
 		getContentPane().add(background);
@@ -78,7 +78,8 @@ public class MainWindow extends JFrame implements ActionListener{
 			
 		}
 		else if(e.getSource()==viewBtn) {
-			
+			this.dispose();
+			new EmployeeWindow();
 		}
 	}
 	
