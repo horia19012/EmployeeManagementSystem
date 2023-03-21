@@ -13,15 +13,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class MainWindow extends JFrame implements ActionListener{
+public class MainWindow extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JButton addBtn;
 	private JButton viewBtn;
-	private JButton updateBtn;
-	private JButton removeBtn;
-
-	
 
 	public MainWindow() {
 		this.setVisible(true);
@@ -34,9 +30,8 @@ public class MainWindow extends JFrame implements ActionListener{
 		getContentPane().setLayout(new GridLayout(0, 1, 0, 0));
 		JLabel background = new JLabel(icon3);
 		background.setBounds(0, 0, 900, 600);
-		
-		
-		JLabel topLabel=new JLabel("Option Menu");
+
+		JLabel topLabel = new JLabel("Option Menu");
 		topLabel.setFont(new Font("serif", Font.PLAIN, 40));
 		topLabel.setBounds(50, 10, 300, 100);
 		background.add(topLabel);
@@ -50,27 +45,19 @@ public class MainWindow extends JFrame implements ActionListener{
 		viewBtn.setBounds(100, 200, 200, 60);
 		background.add(viewBtn);
 		viewBtn.addActionListener(this);
-		
 
 		getContentPane().add(background);
-		
+
 	}
-	
+
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource()==addBtn){
+		if (e.getSource() == addBtn) {
 			this.dispose();
 			new AddEmployee();
-			
-		}else if(e.getSource()==removeBtn) {
-			
-		}
-		else if(e.getSource()==updateBtn) {
-			
-		}
-		else if(e.getSource()==viewBtn) {
+		} else if (e.getSource() == viewBtn) {
 			this.dispose();
 			new EmployeeWindow();
 		}
 	}
-	
+
 }
